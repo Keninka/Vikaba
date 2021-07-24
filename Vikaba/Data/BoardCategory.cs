@@ -8,7 +8,6 @@ namespace Vikaba.Data
         
         public string Title { get; set; } = "";
         
-        // 1:N
         public List<Board> Boards { get; set; } = new List<Board>();
     }
 }

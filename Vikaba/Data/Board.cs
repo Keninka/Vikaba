@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Vikaba.Data
 {
@@ -14,5 +12,7 @@ namespace Vikaba.Data
 
         public int CategoryId { get; set; }
         public BoardCategory Category { get; set; } = null!;
+        
+        public List<BoardThread> BoardThreads { get; set; } = new List<BoardThread>();
     }
 }

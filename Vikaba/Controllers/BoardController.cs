@@ -9,27 +9,27 @@ namespace Vikaba.Controllers
         // GET
         public IActionResult Index()
         {
-            var categoryRandom = new BoardCategory()
+            var categoryRandom = new BoardCategory
             {
                 Title = "Тематика",
                 Id = 1,
-                Boards = new List<Board>()
+                Boards = new List<Board>
                 {
-                    new Board()
+                    new Board
                     {
                         Link = "a",
                         Title = "Аниме",
                         Id = 1
                     },
 
-                    new Board()
+                    new Board
                     {
                         Link = "b",
                         Title = "Бред",
                         Id = 2
                     },
 
-                    new Board()
+                    new Board
                     {
                         Link = "c",
                         Title = "Скрепоносцы",
@@ -38,13 +38,13 @@ namespace Vikaba.Controllers
                 }
             };
 
-            var categoryGames = new BoardCategory()
+            var categoryGames = new BoardCategory
             {
                 Title = "Игры",
                 Id = 2,
-                Boards = new List<Board>()
+                Boards = new List<Board>
                 {
-                    new Board()
+                    new Board
                     {
                         Link = "vg",
                         Title = "Видеоигры",
@@ -57,7 +57,7 @@ namespace Vikaba.Controllers
             {
                 categoryGames, categoryRandom
             };
-            
+
             return View(categories);
         }
     }

@@ -1,5 +1,3 @@
-using System;
-
 namespace Vikaba.Models
 {
     public class ErrorViewModel
