@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <UserSecretsId>aspnet-Vikaba-38EDC251-B0BE-4848-972A-FC5BCAB9C639</UserSecretsId>
+        <Nullable>enable</Nullable>
     </PropertyGroup>
 
     <ItemGroup>
@@ -15,6 +16,10 @@
         <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.2" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.2" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Pages" />
     </ItemGroup>
 
 </Project>

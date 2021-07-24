@@ -64,7 +64,7 @@ namespace Vikaba
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Board}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

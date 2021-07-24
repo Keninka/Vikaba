@@ -1,0 +1,23 @@
+﻿@using Vikaba.Data
+@model Vikaba.Data.BoardCategory[]
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Список досок</h2>
+
+
+@foreach (BoardCategory category in Model)
+{
+    <h3>@category.Title</h3>
+    <ul>
+        @foreach (var board in category.Boards)
+        {
+            <li>
+                <a href="/@board.Link">@board.Title</a>
+            </li>
+        }
+    </ul>
+}
