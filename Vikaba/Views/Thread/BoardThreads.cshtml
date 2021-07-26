@@ -9,7 +9,7 @@
 @foreach (var thread in Model)
 {
     <div class="thread">
-        <span class="createdat">@thread.CreatedAt</span>
+        <span class="postdate">@thread.CreatedAt</span>
         <span class="id">@thread.Id</span>
         <span class="subject">@thread.Subject</span>
         <blockquote class="usertext">@thread.UserText</blockquote>
@@ -17,7 +17,7 @@
         @foreach (var comment in thread.Comments)
         {
             <div class="comment">
-                <span class="createdat">@comment.CreatedAt</span>
+                <span class="postdate">@comment.CreatedAt</span>
                 <span class="id">@comment.Id</span>
                 <span class="username">@comment.UserName</span>
                 <blockquote class="usertext">@comment.UserText</blockquote>
