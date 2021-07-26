@@ -1,8 +1,16 @@
-﻿@model dynamic
+﻿@model Vikaba.Data.BoardThread
 
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
 
-<h2>title</h2>
+@foreach (var comment in Model.Comments)
+{
+    <div class="comment">
+        <span class="postdate">@comment.CreatedAt</span>
+        <span class="id">@comment.Id</span>
+        <span class="username">@comment.UserName</span>
+        <blockquote class="usertext">@comment.UserText</blockquote>
+    </div>
+}

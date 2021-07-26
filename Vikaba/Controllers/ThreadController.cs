@@ -13,16 +13,25 @@ namespace Vikaba.Controllers
         {
             if (board == "vg")
             {
-
                 var threads = new BoardThread[]
                 {
                     new BoardThread
                     {
-                        Subject = "vg thread #1"
+                        Subject = "vg thread #1",
+                        
+                        Board = new Board()
+                        {
+                            Link = "vg"  
+                        }
                     },
                     new BoardThread
                     {
-                        Subject = "vg thread #2"
+                        Subject = "vg thread #2",
+                        
+                        Board = new Board()
+                        {
+                            Link = "vg"  
+                        }
                     },
                 };
                 return View(threads);
@@ -47,6 +56,11 @@ namespace Vikaba.Controllers
                                 Id = 1,
                                 CreatedAt = new DateTime()
                             }
+                        },
+
+                        Board = new Board()
+                        {
+                            Link = "b"
                         }
                     },
 
@@ -73,6 +87,11 @@ namespace Vikaba.Controllers
                                 Id = 3,
                                 CreatedAt = new DateTime()
                             }
+                        },
+                        
+                        Board = new Board()
+                        {
+                            Link = "c"
                         }
                     }
                 };
@@ -89,7 +108,35 @@ namespace Vikaba.Controllers
         [HttpGet("{board}/res/{threadId:int}.html")]
         public ActionResult ThreadComments(string board, int threadId)
         {
-            return View();
+            var comment1 = new Comment()
+            {
+                UserText =
+                    "Не слушай блядь этих умников, делай то что хочешь. Хочется тебе ездить на новой тачке - купи и езди, один раз живём. Завтра ебнет тебя коронавируса осложнения, толку тебе с твоих рублей в носке, если желаемых удовольствий от своего труда и жизни не получил. Можно купить мороженое и жрать его причмокивая от удовольствия, а кому-то важнее рубалек в копилку и дрочить на свои бохатства.\nУ меня одногруппник Саша был, он до болезни рачительный был, ходил в одной рубашке годами, с одним пожухлым пэт пакетом целый учебный год, ел экономно, жил экономно, о машине не мечтал - это слишком дорого, под подушку откладывал. Нахуй так жить",
+                Id = 2,
+                CreatedAt = new DateTime()
+            };
+
+            var comment2 = new Comment()
+            {
+                UserText =
+                    "А, понятно. Какая-то хуета, существующая для электовыставок и в виде рендера от школоты. Держи в курсе, когда он появится, как реальная машина. Пиздец. Ты как плешивая мразь со своим су57, лол.",
+                Id = 3,
+                CreatedAt = new DateTime()
+            };
+
+            var thread1 = new BoardThread
+            {
+                UserText = "Oh, shit. I'm sorry.",
+                Id = 4,
+                CreatedAt = new DateTime(),
+
+                Comments = new List<Comment>
+                {
+                    comment1, comment2
+                }
+            };
+
+            return View(thread1);
         }
     }
 }
