@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Vikaba.Data;
 using Vikaba.Data.Database;
@@ -9,6 +12,13 @@ namespace Vikaba.Controllers
 {
     public class NewsController : Controller
     {
+        private readonly IWebHostEnvironment _environment;
+
+        public NewsController(IWebHostEnvironment environment)
+        {
+            _environment = environment;
+        }
+
         [HttpGet("/news")]
         public ActionResult News()
         {
@@ -55,7 +65,7 @@ namespace Vikaba.Controllers
             {
                 return View("PostNews", news);
             }
-            
+
             var entity = new News
             {
                 Headline = news.Headline,
@@ -68,8 +78,17 @@ namespace Vikaba.Controllers
                 }).ToList()
             };
 
+            if (news.Image != null)
+            {
+                var imageRelativePath = Path.Join("uploads", news.Image.FileName);
+                var uploadPath = Path.Join(_environment.WebRootPath, imageRelativePath);
+                using var uploadedFile = System.IO.File.Create(uploadPath);
+                news.Image.CopyTo(uploadedFile);
+                entity.Image = imageRelativePath;
+            }
+
             NewsDB.NewsList.Add(entity);
-            
+
             return RedirectToAction("News");
         }
     }

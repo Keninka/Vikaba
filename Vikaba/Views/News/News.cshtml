@@ -19,8 +19,13 @@
         <div class="news-item">
             <h2 class="news-headline">@newsItem.Headline</h2>
             <h3 class="news-subheadline">@newsItem.SubHeadline</h3>
+            @if (newsItem.Image != null)
+            {
+                <img src="@newsItem.Image" alt="@newsItem.Headline">
+            }
             <div class="news-content">@newsItem.Content</div>
             <span class="news-publishedat">@newsItem.PublishedAt</span>
+
 
             @foreach (var tagItem in newsItem.Tags)
             {
