@@ -7,7 +7,7 @@ namespace Vikaba.Data
         public int Id { get; set; }
 
         public string Title { get; set; } = "";
-        
+
         public List<News> News { get; set; } = new List<News>();
     }
 }

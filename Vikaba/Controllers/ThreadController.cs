@@ -57,7 +57,7 @@ namespace Vikaba.Controllers
         public ActionResult CreateThread(string board, CreateThread thread)
         {
             ViewBag.Board = board;
-            
+
             if (!ModelState.IsValid)
             {
                 return View(thread);
@@ -80,7 +80,7 @@ namespace Vikaba.Controllers
             thread.Image.CopyTo(uploadedFile);
             entity.Image = imageRelativePath;
 
-            
+
             Threads.ThreadList.Add(entity);
 
             return RedirectToAction("ThreadComments", new {board = board, threadId = entity.Id});

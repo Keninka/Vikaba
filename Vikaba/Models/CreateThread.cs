@@ -10,14 +10,11 @@ namespace Vikaba.Models
         [EmailAddress]
         public string Email { get; set; } = "";
 
-        [DisplayName("Имя пользователя")] 
-        public string UserName { get; set; } = "";
+        [DisplayName("Имя пользователя")] public string UserName { get; set; } = "";
 
-        [DisplayName("Заголовок")] 
-        public string Headline { get; set; } = "";
+        [DisplayName("Заголовок")] public string Headline { get; set; } = "";
 
-        [Required] [DisplayName("Пост")] 
-        public string Content { get; set; } = "";
+        [Required] [DisplayName("Пост")] public string Content { get; set; } = "";
 
         [Required]
         [DisplayName("Изображение")]

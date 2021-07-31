@@ -1,5 +1,4 @@
-﻿@using Vikaba.Data
-@model Vikaba.Data.BoardThread
+﻿@model Vikaba.Data.BoardThread
 
 @{
     ViewBag.Title = "title";
@@ -12,8 +11,6 @@
     <blockquote class="content">@Model.Content</blockquote>
     <span class="post-date">@Model.CreatedAt</span>
     <img src="/@Model.Image" alt="@Model.Headline">
-    
-    
 </div>
 
 @foreach (var comment in Model.Comments)

@@ -92,7 +92,6 @@ namespace Vikaba.Data.Database
                 },
 
                 Board = Boards.BoardMap["a"]
-                
             }
         };
     };
