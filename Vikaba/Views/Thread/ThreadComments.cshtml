@@ -1,9 +1,20 @@
-﻿@model Vikaba.Data.BoardThread
+﻿@using Vikaba.Data
+@model Vikaba.Data.BoardThread
 
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
+
+<div class="thread-post">
+    <span class="post-no">@Model.Id</span>
+    <span class="headline">@Model.Headline</span>
+    <blockquote class="content">@Model.Content</blockquote>
+    <span class="post-date">@Model.CreatedAt</span>
+    <img src="/@Model.Image" alt="@Model.Headline">
+    
+    
+</div>
 
 @foreach (var comment in Model.Comments)
 {

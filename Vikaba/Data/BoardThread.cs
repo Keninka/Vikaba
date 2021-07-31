@@ -7,11 +7,13 @@ namespace Vikaba.Data
     {
         public int Id { get; set; }
 
-        public string Subject { get; set; } = "";
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-        public string UserText { get; set; } = "";
+        public string Headline { get; set; } = "";
 
-        public DateTime CreatedAt { get; set; }
+        public string Content { get; set; } = "";
+
+        public string? Image { get; set; }
 
         public int BoardId { get; set; }
         public Board Board { get; set; } = null!;

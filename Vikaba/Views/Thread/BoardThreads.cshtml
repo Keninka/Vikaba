@@ -1,11 +1,14 @@
-﻿
-@using Vikaba.Data
+﻿@using Vikaba.Data
 @model List<BoardThread>
 
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
 }
+
+<a asp-controller="Thread" asp-action="PostThread" asp-route-board="@Model.First().Board.Link" class="btn btn-primary">
+    <i class="fa fa-plus"></i> Создать тред
+</a>
 
 @foreach (BoardThread thread in Model)
 {
@@ -18,8 +21,8 @@
         </a>
         <span class="postdate">@thread.CreatedAt</span>
         <span class="id">@thread.Id</span>
-        <span class="subject">@thread.Subject</span>
-        <blockquote class="usertext">@thread.UserText</blockquote>
+        <span class="subject">@thread.Headline</span>
+        <blockquote class="usertext">@thread.Content</blockquote>
 
         @foreach (var comment in thread.Comments)
         {

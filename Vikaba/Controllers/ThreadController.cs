@@ -1,13 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Vikaba.Data;
 using Vikaba.Data.Database;
+using Vikaba.Models;
 
 namespace Vikaba.Controllers
 {
     public class ThreadController : Controller
     {
+        private readonly IWebHostEnvironment _environment;
+
+        public ThreadController(IWebHostEnvironment environment)
+        {
+            _environment = environment;
+        }
+
         // /au/
         [HttpGet("/{board}/")]
         public ActionResult BoardThreads(string board)
@@ -34,6 +44,46 @@ namespace Vikaba.Controllers
             }
 
             return Content("Тред не найден");
+        }
+
+        [HttpGet("{board}/thread/new")]
+        public ActionResult PostThread(string board)
+        {
+            ViewBag.Board = board;
+            return View("CreateThread");
+        }
+
+        [HttpPost("{board}/create")]
+        public ActionResult CreateThread(string board, CreateThread thread)
+        {
+            ViewBag.Board = board;
+            
+            if (!ModelState.IsValid)
+            {
+                return View(thread);
+            }
+
+            var entity = new BoardThread()
+            {
+                Id = new Random().Next(),
+
+                Headline = thread.Headline,
+
+                Content = thread.Content,
+
+                Board = Boards.BoardMap[board]
+            };
+
+            var imageRelativePath = Path.Join("uploads", thread.Image.FileName);
+            var uploadPath = Path.Join(_environment.WebRootPath, imageRelativePath);
+            using var uploadedFile = System.IO.File.Create(uploadPath);
+            thread.Image.CopyTo(uploadedFile);
+            entity.Image = imageRelativePath;
+
+            
+            Threads.ThreadList.Add(entity);
+
+            return RedirectToAction("ThreadComments", new {board = board, threadId = entity.Id});
         }
     }
 }

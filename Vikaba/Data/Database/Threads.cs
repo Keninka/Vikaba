@@ -9,30 +9,22 @@ namespace Vikaba.Data.Database
         {
             new BoardThread
             {
-                Subject = "vg thread #1",
-
-                Board = new Board()
-                {
-                    Link = "vg"
-                }
+                Headline = "vg thread #1",
+                Board = Boards.BoardMap["vg"]
             },
 
             new BoardThread
             {
-                Subject = "vg thread #2",
-
-                Board = new Board()
-                {
-                    Link = "vg"
-                }
+                Headline = "vg thread #2",
+                Board = Boards.BoardMap["vg"],
             },
 
             new BoardThread()
             {
                 CreatedAt = new DateTime(),
                 Id = 1,
-                Subject = "Кенинка",
-                UserText = "Lorem ipsum dolor sit amet",
+                Headline = "Кенинка",
+                Content = "Lorem ipsum dolor sit amet",
                 Comments = new List<Comment>()
                 {
                     new Comment()
@@ -44,18 +36,15 @@ namespace Vikaba.Data.Database
                     }
                 },
 
-                Board = new Board()
-                {
-                    Link = "b"
-                }
+                Board = Boards.BoardMap["b"]
             },
 
             new BoardThread()
             {
                 CreatedAt = new DateTime(),
                 Id = 2,
-                Subject = "Новые похождения Кенинки",
-                UserText = "Самая соленая река в России",
+                Headline = "Новые похождения Кенинки",
+                Content = "Самая соленая река в России",
                 Comments = new List<Comment>()
                 {
                     new Comment()
@@ -75,15 +64,12 @@ namespace Vikaba.Data.Database
                     }
                 },
 
-                Board = new Board()
-                {
-                    Link = "c"
-                }
+                Board = Boards.BoardMap["c"]
             },
 
             new BoardThread()
             {
-                UserText = "Oh, shit. I'm sorry.",
+                Content = "Oh, shit. I'm sorry.",
                 Id = 4,
                 CreatedAt = new DateTime(),
                 Comments = new List<Comment>()
@@ -105,11 +91,8 @@ namespace Vikaba.Data.Database
                     }
                 },
 
-                Board = new Board()
-                {
-                    Link = "a"
-                }
-
+                Board = Boards.BoardMap["a"]
+                
             }
         };
     };

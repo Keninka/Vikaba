@@ -33,6 +33,7 @@ namespace Vikaba.Models
         [DisplayName("Теги")]
         public string Tags { get; set; } = "";
 
+        [DisplayName("Изображение")]
         public IFormFile? Image { get; set; }
     }
 }
