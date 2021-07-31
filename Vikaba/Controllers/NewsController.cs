@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Vikaba.Data;
 using Vikaba.Data.Database;
+using Vikaba.Models;
 
 namespace Vikaba.Controllers
 {
@@ -22,7 +23,6 @@ namespace Vikaba.Controllers
         [HttpGet("/news/tag/{tagId}")]
         public ActionResult TagsToNews(string tagId)
         {
-            
             var tagNews = new List<News>();
 
             foreach (News news in NewsDB.NewsList)
@@ -36,10 +36,41 @@ namespace Vikaba.Controllers
                     }
                 }
             }
-            
+
             tagNews.Sort((left, right) => left.PublishedAt.CompareTo(right.PublishedAt));
-            
+
             return View("News", tagNews);
+        }
+
+        [HttpGet("/news/new")]
+        public ActionResult PostNews()
+        {
+            return View();
+        }
+
+        [HttpPost("/news/new")]
+        public ActionResult SaveNews(CreateNews news)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("PostNews", news);
+            }
+            
+            var entity = new News
+            {
+                Headline = news.Headline,
+                SubHeadline = news.SubHeadline,
+                Content = news.Content,
+                PublishedAt = news.PublishedAt,
+                Tags = news.Tags.Split().Select(word => new Tag
+                {
+                    Title = word
+                }).ToList()
+            };
+
+            NewsDB.NewsList.Add(entity);
+            
+            return RedirectToAction("News");
         }
     }
 }

@@ -8,8 +8,12 @@
 
 <h2>Все новости на сегодня</h2>
 
+<a asp-controller="News" asp-action="PostNews" class="btn btn-primary">
+    <i class="fa fa-plus"></i> Создать новость
+</a>
+
 <div>
-    
+
     @foreach (var newsItem in Model)
     {
         <div class="news-item">
@@ -17,17 +21,17 @@
             <h3 class="news-subheadline">@newsItem.SubHeadline</h3>
             <div class="news-content">@newsItem.Content</div>
             <span class="news-publishedat">@newsItem.PublishedAt</span>
-            
+
             @foreach (var tagItem in newsItem.Tags)
             {
                 <a asp-controller="News"
                    asp-action="TagsToNews"
-                   asp-route-tagId="@tagItem.Title">@tagItem.Title</a>
+                   asp-route-tagId="@tagItem.Title">
+                    @tagItem.Title
+                </a>
             }
-            
+
         </div>
     }
-    
+
 </div>
-
-

@@ -6,7 +6,7 @@ namespace Vikaba.Data.Database
 {
     public class NewsDB
     {
-        public static List<News> NewsList =
+        public static readonly List<News> NewsList =
             Enumerable.Range(0, 10).Select(newsId => new News
                 {
                     Id = newsId,
