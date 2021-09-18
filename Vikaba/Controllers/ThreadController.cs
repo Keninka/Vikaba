@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Vikaba.Data;
 using Vikaba.Data.Database;
 using Vikaba.Models;
@@ -12,21 +14,26 @@ namespace Vikaba.Controllers
     public class ThreadController : Controller
     {
         private readonly IWebHostEnvironment _environment;
+        private readonly ApplicationDbContext _db;
 
-        public ThreadController(IWebHostEnvironment environment)
+        public ThreadController(IWebHostEnvironment environment,
+            ApplicationDbContext db)
         {
             _environment = environment;
+            _db = db;
         }
 
-        // /au/
         [HttpGet("/{board}/")]
         public ActionResult BoardThreads(string board)
         {
-            List<BoardThread> threads = Threads.ThreadList;
+            ViewBag.Board = board;
 
-            List<BoardThread> filteredList = threads.FindAll(thread => thread.Board.Link == board);
+            var threads = _db.Threads
+                .Include(thread => thread.Board)
+                .Where(thread => thread.Board.Link == board)
+                .ToList();
 
-            return View(filteredList);
+            return View(threads);
         }
 
 
@@ -35,12 +42,14 @@ namespace Vikaba.Controllers
         [HttpGet("{board}/res/{threadId:int}.html")]
         public ActionResult ThreadComments(string board, int threadId)
         {
-            foreach (BoardThread? thread in Threads.ThreadList)
+            var thread = _db.Threads
+                .Where(thread => thread.Board.Link == board)
+                .Where(thread => threadId == thread.Id)
+                .FirstOrDefault();
+
+            if (thread != null)
             {
-                if (thread.Board.Link == board && threadId == thread.Id)
-                {
-                    return View(thread);
-                }
+                return View(thread);
             }
 
             return Content("Тред не найден");
@@ -63,25 +72,21 @@ namespace Vikaba.Controllers
                 return View(thread);
             }
 
-            var entity = new BoardThread()
-            {
-                Id = new Random().Next(),
-
-                Headline = thread.Headline,
-
-                Content = thread.Content,
-
-                Board = Boards.BoardMap[board]
-            };
-
             var imageRelativePath = Path.Join("uploads", thread.Image.FileName);
             var uploadPath = Path.Join(_environment.WebRootPath, imageRelativePath);
             using var uploadedFile = System.IO.File.Create(uploadPath);
             thread.Image.CopyTo(uploadedFile);
-            entity.Image = imageRelativePath;
 
+            var entity = new BoardThread()
+            {
+                Headline = thread.Headline,
+                Content = thread.Content,
+                Board = _db.Boards.First(b => b.Link == board),
+                Image = imageRelativePath
+            };
 
-            Threads.ThreadList.Add(entity);
+            _db.Threads.Add(entity);
+            _db.SaveChanges();
 
             return RedirectToAction("ThreadComments", new {board = board, threadId = entity.Id});
         }
