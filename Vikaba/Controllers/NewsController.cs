@@ -4,7 +4,6 @@ using System.Linq;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Vikaba.Data;
-using Vikaba.Data.Database;
 using Vikaba.Models;
 
 namespace Vikaba.Controllers
@@ -12,19 +11,20 @@ namespace Vikaba.Controllers
     public class NewsController : Controller
     {
         private readonly IWebHostEnvironment _environment;
+        private readonly ApplicationDbContext _db;
 
-        public NewsController(IWebHostEnvironment environment)
+        public NewsController(IWebHostEnvironment environment, ApplicationDbContext db)
         {
             _environment = environment;
+            _db = db;
         }
 
         [HttpGet("/news")]
         public ActionResult News()
         {
-            var news = new List<News>(NewsDB.NewsList);
-
-            news.Sort((left, right) =>
-                left.PublishedAt.CompareTo(right.PublishedAt));
+            var news = _db.News
+                .OrderByDescending(n => n.PublishedAt)
+                .ToList();
 
             return View(news);
         }
@@ -32,23 +32,13 @@ namespace Vikaba.Controllers
         [HttpGet("/news/tag/{tagId}")]
         public ActionResult TagsToNews(string tagId)
         {
-            var tagNews = new List<News>();
+            var news = _db.News
+                .Where(n => n.Tags
+                    .Any(tag => tag.Title == tagId))
+                .OrderByDescending(n => n.PublishedAt)
+                .ToList();
 
-            foreach (News news in NewsDB.NewsList)
-            {
-                foreach (Tag tag in news.Tags)
-                {
-                    if (tag.Title == tagId)
-                    {
-                        tagNews.Add(news);
-                        break;
-                    }
-                }
-            }
-
-            tagNews.Sort((left, right) => left.PublishedAt.CompareTo(right.PublishedAt));
-
-            return View("News", tagNews);
+            return View("News", news);
         }
 
         [HttpGet("/news/new")]
@@ -71,12 +61,24 @@ namespace Vikaba.Controllers
                 SubHeadline = news.SubHeadline,
                 Content = news.Content,
                 PublishedAt = news.PublishedAt,
-                Tags = news.Tags.Split().Select(word => new Tag
-                {
-                    Title = word
-                }).ToList()
             };
+            
+            foreach (var tag in news.Tags.Split())
+            {
+                var dbTag = _db.Tags
+                    .FirstOrDefault(t => t.Title == tag);
 
+                if (dbTag == null)
+                {
+                    dbTag = new Tag
+                    {
+                        Title = tag
+                    };
+                }
+                
+                entity.Tags.Add(dbTag);
+            }
+            
             if (news.Image != null)
             {
                 var imageRelativePath = Path.Join("uploads", news.Image.FileName);
@@ -86,7 +88,8 @@ namespace Vikaba.Controllers
                 entity.Image = imageRelativePath;
             }
 
-            NewsDB.NewsList.Add(entity);
+            _db.News.Add(entity);
+            _db.SaveChanges();
 
             return RedirectToAction("News");
         }

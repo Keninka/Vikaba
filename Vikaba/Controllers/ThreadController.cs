@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Vikaba.Data;
-using Vikaba.Data.Database;
 using Vikaba.Models;
 
 namespace Vikaba.Controllers
